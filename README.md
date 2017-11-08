@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/qcloud-cos-upload.svg)](https://www.npmjs.com/package/qcloud-cos-upload)
 
-上传单个文件到腾讯云COS服务
+上传单个文件到腾讯云COS服务，用于静态文件上传
 
 适配腾讯云官方 COS Nodejs SDK（XML API） [cos-nodejs-sdk-v5](https://github.com/tencentyun/cos-nodejs-sdk-v5)
 
