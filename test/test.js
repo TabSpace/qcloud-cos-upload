@@ -58,7 +58,7 @@ describe('upload-not-overwrite', function () {
 
 	before(done => {
 		$upload(Object.assign({}, $config, {
-			file: noopLocalPath,
+			FilePath: noopLocalPath,
 			Key: noopKey
 		})).then(rs => {
 			uploadRs = rs;
@@ -79,7 +79,8 @@ describe('upload-not-overwrite', function () {
 
 	it('File should be exists', () => {
 		console.log('upload-not-overwrite cosRs', cosRs);
-		$chai.expect(cosRs).to.be.an('object');
+		$chai.expect(cosRs).to.be.a('string');
+		$chai.expect(cosRs).to.not.include(timestamp);
 	});
 });
 
@@ -91,7 +92,8 @@ describe('upload-overwrite', function () {
 
 	before(done => {
 		$upload(Object.assign({}, $config, {
-			file: noopLocalPath,
+			overwrite: true,
+			FilePath: noopLocalPath,
 			Key: overwriteKey
 		})).then(rs => {
 			uploadRs = rs;
@@ -112,7 +114,8 @@ describe('upload-overwrite', function () {
 
 	it('File should be exists', () => {
 		console.log('upload-overwrite cosRs', cosRs);
-		$chai.expect(cosRs).to.be.an('object');
+		$chai.expect(cosRs).to.be.a('string');
+		$chai.expect(cosRs).to.include(timestamp);
 	});
 });
 
@@ -124,7 +127,7 @@ describe('upload-new', function () {
 
 	before(done => {
 		$upload(Object.assign({}, $config, {
-			file: noopLocalPath,
+			FilePath: noopLocalPath,
 			Key: timestampKey
 		})).then(rs => {
 			uploadRs = rs;
@@ -145,7 +148,8 @@ describe('upload-new', function () {
 
 	it('File should be exists', () => {
 		console.log('upload-new cosRs', cosRs);
-		$chai.expect(cosRs).to.be.an('object');
+		$chai.expect(cosRs).to.be.a('string');
+		$chai.expect(cosRs).to.include(timestamp);
 	});
 });
 

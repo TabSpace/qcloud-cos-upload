@@ -59,7 +59,6 @@ const $urljoin = require('url-join');
 //      'x-cos-request-id': 'NWEwMjc2OWJfNWNiMjU4NjRfMjdlY18zNTk3Zg==' } }
 
 
-
 const cosCache = {};
 
 const requestParam = {
@@ -74,6 +73,7 @@ const requestParam = {
 
 const uploadFile = (conf, cos) => {
 	let progressIndex = 0;
+
 	cos.sliceUploadFile({
 		Bucket: conf.Bucket,
 		Region: conf.Region,
@@ -173,11 +173,14 @@ const upload = options => {
 			reject(new Error(msg));
 		};
 
-		Object.keys(requestParam).forEach(key => {
+		let hasAllRequestParam = Object.keys(requestParam).every(key => {
 			if (!conf[key]) {
 				conf.error(`Need param: ${key}`);
 			}
+			return conf[key];
 		});
+
+		if (!hasAllRequestParam) { return; }
 
 		let cos = cosCache[conf.AppId];
 		if (!cos) {
