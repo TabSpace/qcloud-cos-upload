@@ -1,6 +1,10 @@
 # qcloud-cos-upload
 
-上传单个文件到腾讯云COS服务，识别文件是否已上传，根据选项配置判定是否覆盖文件
+[![npm version](https://badge.fury.io/js/qcloud-cos-upload.svg)](https://www.npmjs.com/package/qcloud-cos-upload)
+
+上传单个文件到腾讯云COS服务
+
+适配腾讯云官方 COS Nodejs SDK（XML API） [cos-nodejs-sdk-v5](https://github.com/tencentyun/cos-nodejs-sdk-v5)
 
 ## Getting Started
 
@@ -16,6 +20,7 @@ npm i qcloud-cos-upload
 
 ```script
 const upload = require('qcloud-cos-upload');
+
 upload({
 	// 是否开启调试模式，默认为 false，调试模式下，报错时输出详细错误信息
 	debug: false,
@@ -42,4 +47,4 @@ upload({
 
 ## Release History
 
- * 2017-11-08 v0.1.0 发布第一个正式版
+ * 2017-11-08 v1.0.0 发布第一个正式版
