@@ -2,63 +2,6 @@ const $chalk = require('chalk');
 const $cos = require('cos-nodejs-sdk-v5');
 const $urljoin = require('url-join');
 
-// console.log('getting acl');
-
-// data: { GrantFullControl: '',
-//   GrantWrite: '',
-//   GrantRead: '',
-//   ACL: 'default',
-//   Owner:
-//    { ID: 'qcs::cam::uin/3381845790:uin/3381845790',
-//      DisplayName: 'qcs::cam::uin/3381845790:uin/3381845790' },
-//   Grants: [ { Grantee: [Object], Permission: 'FULL_CONTROL' } ],
-//   statusCode: 200,
-//   headers:
-//    { 'content-type': 'application/xml',
-//      'content-length': '520',
-//      connection: 'close',
-//      date: 'Wed, 08 Nov 2017 06:28:20 GMT',
-//      server: 'tencent-cos',
-//      'x-cos-acl': 'default',
-//      'x-cos-request-id': 'NWEwMmE0MDRfNGQ5ZTU4NjRfMjNkOF8zYzI3Ng==' } }
-//      
-// error: { error:
-//    { Code: 'NoSuchKey',
-//      Message: 'The specified key does not exist.',
-//      Resource: 'ria-1252004079.cos.ap-chengdu.myqcloud.com/temp/noop1.js',
-//      RequestId: 'NWEwMmE0MWRfMjNiMjU4NjRfNDJiZl8zMDdjMQ==',
-//      TraceId: 'OGVmYzZiMmQzYjA2OWNhODk0NTRkMTBiOWVmMDAxODczNTBmNjMwZmQ0MTZkMjg0NjlkNTYyNmY4ZTRkZTk0N2ZiYTAwYjg1MWZmZjM2YzZhZjBhNjU1ZGRiZjY0NzcwMmNjMTllMmNjN2I0ZDUzYjAxMzk4M2YyOTRkNWMwYTI=' },
-//   statusCode: 404,
-//   headers:
-//    { 'content-type': 'application/xml',
-//      'content-length': '473',
-//      connection: 'close',
-//      date: 'Wed, 08 Nov 2017 06:28:45 GMT',
-//      server: 'tencent-cos',
-//      'x-cos-request-id': 'NWEwMmE0MWRfMjNiMjU4NjRfNDJiZl8zMDdjMQ==',
-//      'x-cos-trace-id': 'OGVmYzZiMmQzYjA2OWNhODk0NTRkMTBiOWVmMDAxODczNTBmNjMwZmQ0MTZkMjg0NjlkNTYyNmY4ZTRkZTk0N2ZiYTAwYjg1MWZmZjM2YzZhZjBhNjU1ZGRiZjY0NzcwMmNjMTllMmNjN2I0ZDUzYjAxMzk4M2YyOTRkNWMwYTI=' } }
-
-
-
-// console.log('start upload');
-
-// start upload
-// task ready: 4d36bd63-ccaa-c393-bb8a-814263558517
-// onProgress: { loaded: 44, total: 44, speed: 106.02, percent: 1 }
-// data: { Location: 'ria-1252004079.cn-southwest.myqcloud.com/temp/noop.js',
-//   Bucket: 'ria',
-//   Key: 'temp/noop.js',
-//   ETag: '"e0d4567457dc546ac3e902c17f9fefcd-1"',
-//   statusCode: 200,
-//   headers:
-//    { 'content-type': 'application/xml',
-//      'transfer-encoding': 'chunked',
-//      connection: 'close',
-//      date: 'Wed, 08 Nov 2017 03:14:35 GMT',
-//      server: 'tencent-cos',
-//      'x-cos-request-id': 'NWEwMjc2OWJfNWNiMjU4NjRfMjdlY18zNTk3Zg==' } }
-
-
 const cosCache = {};
 
 const requestParam = {
