@@ -37,5 +37,9 @@
   "bugs": {
     "url": "https://github.com/TabSpace/qcloud-cos-upload/issues"
   },
-  "homepage": "https://github.com/TabSpace/qcloud-cos-upload#readme"
+  "homepage": "https://github.com/TabSpace/qcloud-cos-upload#readme",
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 5.0.0"
+  }
 }
