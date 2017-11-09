@@ -44,12 +44,16 @@ const uploadFile = (conf, cos) => {
 		} else if (data && data.statusCode === 200) {
 			if (conf.isOverwriting) {
 				console.log($chalk.cyan(`Overwrite: ${conf.cosPath}`));
+				conf.resolve({
+					isOverwrited: true,
+					path: conf.cosPath
+				});
 			} else {
 				console.log($chalk.green(`Success: ${conf.cosPath}`));
+				conf.resolve({
+					path: conf.cosPath
+				});
 			}
-			conf.resolve({
-				path: conf.cosPath
-			});
 		} else {
 			conf.error('Upload error', data);
 		}
