@@ -104,6 +104,9 @@ const upload = options => {
 
 	conf.domain = `${conf.Bucket}-${conf.AppId}.coscd.myqcloud.com`;
 	conf.cosPath = $urljoin(`http://${conf.domain}`, conf.Key);
+	if (conf.Bucket.indexOf('-') < 0) {
+		conf.Bucket = conf.Bucket + '-' + conf.AppId;
+	}
 
 	return new Promise((resolve, reject) => {
 		conf.resolve = resolve;
