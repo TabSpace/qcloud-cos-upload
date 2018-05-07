@@ -1,22 +1,22 @@
 {
   "name": "qcloud-cos-upload",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "上传单个文件到腾讯云COS服务",
   "main": "index.js",
   "dependencies": {
     "chalk": "2.3.0",
-    "cos-nodejs-sdk-v5": "2.0.16",
+    "cos-nodejs-sdk-v5": "2.4.0",
     "url-join": "2.0.2"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.2",
-    "chai": "^4.1.2",
-    "eslint": "^4.10.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-friendly-formatter": "^3.0.0",
-    "eslint-plugin-import": "^2.8.0",
-    "mocha": "^4.0.1",
-    "request-promise": "^4.2.2"
+    "babel-eslint": "8.0.2",
+    "chai": "4.1.2",
+    "eslint": "4.10.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-friendly-formatter": "3.0.0",
+    "eslint-plugin-import": "2.8.0",
+    "mocha": "4.0.1",
+    "request-promise": "4.2.2"
   },
   "scripts": {
     "test": "mocha",
