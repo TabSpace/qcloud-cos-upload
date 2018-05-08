@@ -14,6 +14,8 @@ const requestParam = {
 	FilePath: ''
 };
 
+const SLICE_UPLOAD_FILE_SIZE = 1024 * 1024;
+
 const uploadFile = (conf, cos) => {
 	let progressIndex = 0;
 
@@ -23,7 +25,7 @@ const uploadFile = (conf, cos) => {
 		Key: conf.Key,
 		FilePath: conf.FilePath,
 		onProgress: progressData => {
-			if (progressIndex > 0 && progressData && progressData.total > 500) {
+			if (progressIndex > 0 && progressData && progressData.total > SLICE_UPLOAD_FILE_SIZE) {
 				if (progressIndex === 1) {
 					console.log($chalk.gray(`Uploading: ${conf.cosPath}`));
 				}
