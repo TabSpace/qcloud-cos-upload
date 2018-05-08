@@ -1,6 +1,6 @@
 {
   "name": "qcloud-cos-upload",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "上传单个文件到腾讯云COS服务",
   "main": "index.js",
   "dependencies": {

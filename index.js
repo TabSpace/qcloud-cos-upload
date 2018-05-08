@@ -23,14 +23,12 @@ const uploadFile = (conf, cos) => {
 		Key: conf.Key,
 		FilePath: conf.FilePath,
 		onProgress: progressData => {
-			if (progressIndex > 0) {
+			if (progressIndex > 0 && progressData && progressData.total > 500) {
 				if (progressIndex === 1) {
 					console.log($chalk.gray(`Uploading: ${conf.cosPath}`));
 				}
-				if (progressData) {
-					let percent = (Math.floor(progressData.percent * 100) || 0) + '%';
-					console.log($chalk.gray(`total:${progressData.total}, loaded:${progressData.loaded}, speed:${progressData.speed}, percent:${percent}`));
-				}
+				let percent = (Math.floor(progressData.percent * 100) || 0) + '%';
+				console.log($chalk.gray(`total:${progressData.total}, loaded:${progressData.loaded}, speed:${progressData.speed}, percent:${percent}`));
 			}
 			progressIndex++;
 		}
