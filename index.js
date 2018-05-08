@@ -106,6 +106,8 @@ const upload = options => {
 	conf.cosPath = $urljoin(`http://${conf.domain}`, conf.Key);
 	if (conf.Bucket.indexOf('-') < 0) {
 		conf.Bucket = conf.Bucket + '-' + conf.AppId;
+	} else if (!conf.AppId) {
+		conf.AppId = conf.Bucket.split('-')[1] || '';
 	}
 
 	return new Promise((resolve, reject) => {
@@ -135,7 +137,11 @@ const upload = options => {
 		let cos = cosCache[conf.AppId];
 		if (!cos) {
 			cos = new $cos({
-				AppId: conf.AppId,
+				// 官方提示：
+				// AppId has been deprecated,
+				// Please put it at the end of parameter Bucket
+				// (E.g: "test-1250000000").
+				// AppId: conf.AppId,
 				SecretId: conf.SecretId,
 				SecretKey: conf.SecretKey
 			});
