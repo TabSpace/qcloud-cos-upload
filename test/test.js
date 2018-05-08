@@ -72,12 +72,12 @@ describe('upload-not-overwrite', function () {
 		});
 	});
 
-	it('Upload should succeed', () => {
+	it('NotOverwrite upload state should be succeed', () => {
 		console.log('upload-not-overwrite uploadRs:', uploadRs);
 		$chai.expect(uploadRs).to.be.an('object');
 	});
 
-	it('File should be exists', () => {
+	it('NotOverwrite target file should not be updated', () => {
 		console.log('upload-not-overwrite cosRs', cosRs);
 		$chai.expect(cosRs).to.be.a('string');
 		$chai.expect(cosRs).to.not.include(timestamp);
@@ -107,12 +107,12 @@ describe('upload-overwrite', function () {
 		});
 	});
 
-	it('Upload should succeed', () => {
+	it('Overwrite upload should succeed', () => {
 		console.log('upload-overwrite uploadRs:', uploadRs);
 		$chai.expect(uploadRs).to.be.an('object');
 	});
 
-	it('File should be exists', () => {
+	it('Overwrite file should be updated', () => {
 		console.log('upload-overwrite cosRs', cosRs);
 		$chai.expect(cosRs).to.be.a('string');
 		$chai.expect(cosRs).to.include(timestamp);
@@ -141,12 +141,12 @@ describe('upload-new', function () {
 		});
 	});
 
-	it('Upload should succeed', () => {
+	it('New File upload should succeed', () => {
 		console.log('upload-new uploadRs:', uploadRs);
 		$chai.expect(uploadRs).to.be.an('object');
 	});
 
-	it('File should be exists', () => {
+	it('New file should be exists', () => {
 		console.log('upload-new cosRs', cosRs);
 		$chai.expect(cosRs).to.be.a('string');
 		$chai.expect(cosRs).to.include(timestamp);
