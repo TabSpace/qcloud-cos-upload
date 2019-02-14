@@ -13,20 +13,20 @@ const {
 } = $mocha;
 
 const timestamp = Date.now();
-const noopLocalPath = $path.resolve(__dirname, '../temp/noop.js');
+const testLocalPath = $path.resolve(__dirname, '../temp/test.js');
 const domain = `${$config.Bucket}-${$config.AppId}.coscd.myqcloud.com`;
 const perfix = 'temp/tabspace';
 
-const noopKey = `${perfix}/noop.js`;
-const noopCosPath = `http://${domain}/${perfix}/noop.js`;
+const testKey = `${perfix}/test.js`;
+const testCosPath = `http://${domain}/${perfix}/test.js`;
 
-const overwriteKey = `${perfix}/noop-overwrite.js`;
-const overwriteCosPath = `http://${domain}/${perfix}/noop-overwrite.js`;
+const overwriteKey = `${perfix}/test-overwrite.js`;
+const overwriteCosPath = `http://${domain}/${perfix}/test-overwrite.js`;
 
-const timestampKey = `${perfix}/noop-${timestamp}.js`;
-const timestampCosPath = `http://${domain}/${perfix}/noop-${timestamp}.js`;
+const timestampKey = `${perfix}/test-${timestamp}.js`;
+const timestampCosPath = `http://${domain}/${perfix}/test-${timestamp}.js`;
 
-$fs.writeFileSync(noopLocalPath, `console.log(${timestamp});\n`, 'utf8');
+$fs.writeFileSync(testLocalPath, `console.log(${timestamp});\n`, 'utf8');
 
 describe('config', () => {
 	it('config.AppId should be a string', () => {
@@ -58,8 +58,8 @@ describe('upload-not-overwrite', function () {
 
 	before(done => {
 		$upload(Object.assign({}, $config, {
-			FilePath: noopLocalPath,
-			Key: noopKey
+			FilePath: testLocalPath,
+			Key: testKey
 		}))
 			.then(rs => {
 				uploadRs = rs;
@@ -67,7 +67,7 @@ describe('upload-not-overwrite', function () {
 			.then(() => new Promise(resolve => {
 				setTimeout(resolve, 1000);
 			}))
-			.then(() => $rp(noopCosPath))
+			.then(() => $rp(testCosPath))
 			.then(rs => {
 				cosRs = rs;
 				setTimeout(done, 1000);
@@ -99,7 +99,7 @@ describe('upload-overwrite', function () {
 	before(done => {
 		$upload(Object.assign({}, $config, {
 			overwrite: true,
-			FilePath: noopLocalPath,
+			FilePath: testLocalPath,
 			Key: overwriteKey
 		}))
 			.then(rs => {
@@ -139,7 +139,7 @@ describe('upload-new', function () {
 
 	before(done => {
 		$upload(Object.assign({}, $config, {
-			FilePath: noopLocalPath,
+			FilePath: testLocalPath,
 			Key: timestampKey
 		}))
 			.then(rs => {
