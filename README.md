@@ -1,6 +1,7 @@
 # qcloud-cos-upload
 
 [![npm version](https://badge.fury.io/js/qcloud-cos-upload.svg)](https://www.npmjs.com/package/qcloud-cos-upload)
+[![Build Status](https://travis-ci.com/TabSpace/qcloud-cos-upload.svg?branch=master)](https://travis-ci.com/TabSpace/qcloud-cos-upload)
 
 上传单个文件到腾讯云COS服务，用于静态文件上传
 
