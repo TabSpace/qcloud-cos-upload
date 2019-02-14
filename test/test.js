@@ -4,7 +4,7 @@ const $rp = require('request-promise');
 const $chai = require('chai');
 const $mocha = require('mocha');
 const $upload = require('../index');
-const $config = require('../temp/config');
+const $config = require('./config');
 
 const {
 	describe,
@@ -60,16 +60,22 @@ describe('upload-not-overwrite', function () {
 		$upload(Object.assign({}, $config, {
 			FilePath: noopLocalPath,
 			Key: noopKey
-		})).then(rs => {
-			uploadRs = rs;
-			return $rp(noopCosPath);
-		}).then(rs => {
-			cosRs = rs;
-			done();
-		}).catch(err => {
-			console.error('upload-not-overwrite error:', err.message);
-			done();
-		});
+		}))
+			.then(rs => {
+				uploadRs = rs;
+			})
+			.then(() => new Promise(resolve => {
+				setTimeout(resolve, 1000);
+			}))
+			.then(() => $rp(noopCosPath))
+			.then(rs => {
+				cosRs = rs;
+				setTimeout(done, 1000);
+			})
+			.catch(err => {
+				console.error('upload-not-overwrite error:', err.message);
+				done();
+			});
 	});
 
 	it('NotOverwrite upload state should be succeed', () => {
@@ -95,16 +101,22 @@ describe('upload-overwrite', function () {
 			overwrite: true,
 			FilePath: noopLocalPath,
 			Key: overwriteKey
-		})).then(rs => {
-			uploadRs = rs;
-			return $rp(overwriteCosPath);
-		}).then(rs => {
-			cosRs = rs;
-			done();
-		}).catch(err => {
-			console.error('upload-overwrite error:', err.message);
-			done();
-		});
+		}))
+			.then(rs => {
+				uploadRs = rs;
+			})
+			.then(() => new Promise(resolve => {
+				setTimeout(resolve, 1000);
+			}))
+			.then(() => $rp(overwriteCosPath))
+			.then(rs => {
+				cosRs = rs;
+				setTimeout(done, 1000);
+			})
+			.catch(err => {
+				console.error('upload-overwrite error:', err.message);
+				done();
+			});
 	});
 
 	it('Overwrite upload should succeed', () => {
@@ -129,16 +141,22 @@ describe('upload-new', function () {
 		$upload(Object.assign({}, $config, {
 			FilePath: noopLocalPath,
 			Key: timestampKey
-		})).then(rs => {
-			uploadRs = rs;
-			return $rp(timestampCosPath);
-		}).then(rs => {
-			cosRs = rs;
-			done();
-		}).catch(err => {
-			console.error('upload-new error:', err.message);
-			done();
-		});
+		}))
+			.then(rs => {
+				uploadRs = rs;
+			})
+			.then(() => new Promise(resolve => {
+				setTimeout(resolve, 1000);
+			}))
+			.then(() => $rp(timestampCosPath))
+			.then(rs => {
+				cosRs = rs;
+				done();
+			})
+			.catch(err => {
+				console.error('upload-new error:', err.message);
+				done();
+			});
 	});
 
 	it('New File upload should succeed', () => {

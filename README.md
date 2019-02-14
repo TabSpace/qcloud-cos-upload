@@ -6,6 +6,8 @@
 
 适配腾讯云官方 COS Nodejs SDK（XML API） [cos-nodejs-sdk-v5](https://github.com/tencentyun/cos-nodejs-sdk-v5)
 
+批量上传文件参见 [gulp-qcloud-cos-upload](https://github.com/TabSpace/gulp-qcloud-cos-upload)
+
 ## Getting Started
 
 安装:
@@ -47,8 +49,8 @@ upload({
 
 ## Release History
 
- * 2018-05-08 v1.0.5 上传文件超过一定大小(progressData.total > 1024*1024)，才显示上传进度信息
- * 2018-05-08 v1.0.3 参数配置遵循腾讯云规范，避免警告呈现
- * 2018-05-07 v1.0.2 更新腾讯云sdk依赖
- * 2018-01-02 v1.0.1 锁死依赖版本号，避免腾讯云api不稳定的影响
- * 2017-11-08 v1.0.0 发布第一个正式版
+* 2018-05-08 v1.0.5 上传文件超过一定大小(progressData.total > 1024*1024)，才显示上传进度信息
+* 2018-05-08 v1.0.3 参数配置遵循腾讯云规范，避免警告呈现
+* 2018-05-07 v1.0.2 更新腾讯云sdk依赖
+* 2018-01-02 v1.0.1 锁死依赖版本号，避免腾讯云api不稳定的影响
+* 2017-11-08 v1.0.0 发布第一个正式版

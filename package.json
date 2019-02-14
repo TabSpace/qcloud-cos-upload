@@ -1,6 +1,6 @@
 {
   "name": "qcloud-cos-upload",
-  "version": "1.0.5",
+  "version": "0.0.0-development",
   "description": "上传单个文件到腾讯云COS服务",
   "main": "index.js",
   "dependencies": {
@@ -16,24 +16,29 @@
     "eslint-friendly-formatter": "3.0.0",
     "eslint-plugin-import": "2.8.0",
     "mocha": "4.0.1",
-    "request-promise": "4.2.2"
+    "request-promise": "4.2.2",
+    "semantic-release": "^15.13.3"
   },
   "scripts": {
     "test": "mocha",
-    "lint": "eslint --ext .js ./"
+    "lint": "eslint --ext .js ./",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TabSpace/qcloud-cos-upload.git"
+    "url": "https://github.com/TabSpace/qcloud-cos-upload.git"
   },
   "files": [
     "index.js"
   ],
   "keywords": [
     "qcloud",
+    "腾讯云",
     "cos",
+    "file",
+    "文件",
     "upload",
-    "腾讯云"
+    "上传"
   ],
   "author": "TabSpace <pillar0514@gmail.com>",
   "license": "MIT",
