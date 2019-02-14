@@ -51,7 +51,7 @@ describe('config', () => {
 });
 
 describe('upload-not-overwrite', function () {
-	this.timeout(5000);
+	this.timeout(20000);
 
 	let uploadRs = null;
 	let cosRs = null;
@@ -91,7 +91,7 @@ describe('upload-not-overwrite', function () {
 });
 
 describe('upload-overwrite', function () {
-	this.timeout(5000);
+	this.timeout(20000);
 
 	let uploadRs = null;
 	let cosRs = null;
@@ -132,7 +132,7 @@ describe('upload-overwrite', function () {
 });
 
 describe('upload-new', function () {
-	this.timeout(5000);
+	this.timeout(20000);
 
 	let uploadRs = null;
 	let cosRs = null;
