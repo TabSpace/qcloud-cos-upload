@@ -23,7 +23,7 @@
 
 安装:
 
-```shell
+```bash
 npm i qcloud-cos-upload
 ```
 
