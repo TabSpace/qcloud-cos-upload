@@ -5,7 +5,7 @@
 
 上传单个文件到腾讯云COS服务，用于静态文件上传
 
-[releases and changelog](https://github.com/tencentyun/cos-nodejs-sdk-v5/releases)
+[releases and changelog](https://github.com/TabSpace/qcloud-cos-upload/releases)
 
 ## Tips
 
