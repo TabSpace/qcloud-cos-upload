@@ -5,9 +5,19 @@
 
 上传单个文件到腾讯云COS服务，用于静态文件上传
 
+[releases and changelog](https://github.com/tencentyun/cos-nodejs-sdk-v5/releases)
+
+## Tips
+
 适配腾讯云官方 COS Nodejs SDK（XML API） [cos-nodejs-sdk-v5](https://github.com/tencentyun/cos-nodejs-sdk-v5)
 
 批量上传文件参见 [gulp-qcloud-cos-upload](https://github.com/TabSpace/gulp-qcloud-cos-upload)
+
+为安全起见，建议为每个存储桶提供独立的子账号，使用子账号的 SecretId 和 SecretKey 来上传文件。
+
+[创建子账号](https://cloud.tencent.com/document/product/634/14453)
+
+在存储桶配置的`权限管理`页卡配置`存储桶访问权限`和`Policy权限设置`，提供子账号的访问权限。
 
 ## Getting Started
 
