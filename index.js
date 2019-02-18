@@ -35,7 +35,7 @@ function uploadFile(conf, cos) {
 			onProgress: progressData => {
 				if (progressIndex > 0 && progressData && progressData.total > SLICE_UPLOAD_FILE_SIZE) {
 					if (conf.log && progressIndex === 1) {
-						console.log($chalk.gray(`Uploading: ${conf.cosPath}`));
+						console.log($chalk.gray(`Uploading: ${conf.cosUrl}`));
 					}
 					let percent = (Math.floor(progressData.percent * 100) || 0) + '%';
 					if (conf.log) {
@@ -48,6 +48,9 @@ function uploadFile(conf, cos) {
 			let upErr = new Error('Upload error.');
 			if (err) {
 				upErr.detail = err;
+				if (err && err.error && err.error.Message) {
+					upErr.message = err.error.Message;
+				}
 				reject(upErr);
 			} else if (data && data.statusCode === 200) {
 				conf.uploadData = data;
@@ -71,6 +74,9 @@ function checkAcl(conf, cos) {
 			let aclErr = new Error('Acl Error.');
 			if (err) {
 				aclErr.detail = err;
+				if (err && err.error && err.error.Message) {
+					aclErr.message = err.error.Message;
+				}
 				reject(aclErr);
 			} else if (data && data.statusCode === 200) {
 				conf.isExists = true;
@@ -99,13 +105,13 @@ function upload(options) {
 	}, requestParam, options);
 
 	conf.domain = `${conf.Bucket}-${conf.AppId}.coscd.myqcloud.com`;
-	conf.cosPath = $urljoin(`http://${conf.domain}`, conf.Key);
+	conf.cosUrl = $urljoin(`http://${conf.domain}`, conf.Key);
 
 	if (conf.cdn === true) {
 		let cdnDomain = `${conf.Bucket}-${conf.AppId}.file.myqcloud.com`;
-		conf.cdnPath = $urljoin(`http://${cdnDomain}`, conf.Key);
+		conf.cdnUrl = $urljoin(`http://${cdnDomain}`, conf.Key);
 	} else if (conf.cdn) {
-		conf.cdnPath = $urljoin(`http://${conf.cdn}`, conf.Key);
+		conf.cdnUrl = $urljoin(`http://${conf.cdn}`, conf.Key);
 	}
 	if (conf.Bucket.indexOf('-') < 0) {
 		conf.Bucket = conf.Bucket + '-' + conf.AppId;
@@ -124,7 +130,12 @@ function upload(options) {
 		return Promise.reject(new Error('Missing parameter.'));
 	}
 
-	let cos = cosCache[conf.AppId];
+	let cacheId = [
+		conf.AppId,
+		conf.SecretId,
+		conf.SecretKey
+	].join('____');
+	let cos = cosCache[cacheId];
 	if (!cos) {
 		// 官方提示：
 		// AppId has been deprecated,
@@ -135,7 +146,7 @@ function upload(options) {
 			SecretId: conf.SecretId,
 			SecretKey: conf.SecretKey
 		});
-		cosCache[conf.AppId] = cos;
+		cosCache[cacheId] = cos;
 	}
 
 	let pm = checkAcl(conf, cos)
@@ -155,9 +166,9 @@ function upload(options) {
 			}
 		})
 		.then(spec => {
-			let fileUrl = spec.cosPath;
-			if (spec.cdn && spec.cdnPath) {
-				fileUrl = spec.cdnPath;
+			let fileUrl = spec.cosUrl;
+			if (spec.cdn && spec.cdnUrl) {
+				fileUrl = spec.cdnUrl;
 			}
 			spec.url = fileUrl;
 
@@ -182,12 +193,8 @@ function upload(options) {
 			return spec;
 		})
 		.catch(err => {
-			if (err) {
-				if (err.detail && err.detail.error && err.detail.error.Message) {
-					showError(conf, err.detail.error.Message, err);
-				} else if (err.message) {
-					showError(conf, err.message, err);
-				}
+			if (err && err.message) {
+				showError(conf, err.message, err);
 			}
 			return Promise.reject(err);
 		});
