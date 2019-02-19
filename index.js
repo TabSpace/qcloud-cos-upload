@@ -111,6 +111,8 @@ function upload(options) {
 	options = options || {};
 
 	let conf = Object.assign({
+		// 输出文件路径协议
+		protocol: 'https:',
 		// 静态资源对应 cdn 域名，配置后，打印在控制台的日志自动替换域名显示
 		// 配置为 true ，自动匹配腾讯云 cdn 域名
 		cdn: '',
@@ -123,13 +125,13 @@ function upload(options) {
 	}, requestParam, options);
 
 	conf.domain = `${conf.Bucket}-${conf.AppId}.coscd.myqcloud.com`;
-	conf.cosUrl = $urljoin(`http://${conf.domain}`, conf.Key);
+	conf.cosUrl = $urljoin(`${conf.protocol}//${conf.domain}`, conf.Key);
 
 	if (conf.cdn === true) {
 		let cdnDomain = `${conf.Bucket}-${conf.AppId}.file.myqcloud.com`;
-		conf.cdnUrl = $urljoin(`http://${cdnDomain}`, conf.Key);
+		conf.cdnUrl = $urljoin(`${conf.protocol}//${cdnDomain}`, conf.Key);
 	} else if (conf.cdn) {
-		conf.cdnUrl = $urljoin(`http://${conf.cdn}`, conf.Key);
+		conf.cdnUrl = $urljoin(`${conf.protocol}//${conf.cdn}`, conf.Key);
 	}
 	if (conf.Bucket.indexOf('-') < 0) {
 		conf.Bucket = conf.Bucket + '-' + conf.AppId;

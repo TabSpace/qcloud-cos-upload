@@ -44,6 +44,8 @@ upload({
   overwrite: false,
   // 为 true 则输出文件路径为腾讯云默认 CDN 地址。为具体域名，则替换腾讯云默认 CDN 域名。
   cdn: '',
+  // 文件远程路径协议，默认为 'https:'，这个选项仅影响输出结果。
+  protocol: 'https:',
   // 在腾讯云申请的 AppId
   AppId: '1000000000',
   // 配置腾讯云 COS 服务所需的 SecretId
