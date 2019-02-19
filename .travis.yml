@@ -15,13 +15,9 @@ cache:
   directories:
     - node_modules
 
-script: yarn test
-
 jobs:
   include:
+    - stage: test
+      script: yarn test
     - stage: release
-      node_js: lts/*
-      script:
-        - yarn semantic-release
-
-
+      script: yarn semantic-release
