@@ -70,22 +70,6 @@
       "git add"
     ]
   },
-  "release": {
-    "plugins": [
-      [
-        "@semantic-release/git",
-        {
-          "assets": [
-            "dist/**/*.{js,css}",
-            "docs",
-            "*.md",
-            "package.json"
-          ],
-          "message": "chore(release): Update version to ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-        }
-      ]
-    ]
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
