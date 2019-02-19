@@ -24,7 +24,17 @@ function showError(conf, msg, err) {
 	}
 }
 
+function showDebug(conf, msg, item) {
+	if (conf.debug) {
+		console.log($chalk.yellow('[DEBUG]'), msg);
+		if (item) {
+			console.log($chalk.yellow('[DEBUG]'), item);
+		}
+	}
+}
+
 function uploadFile(conf, cos) {
+	showDebug(conf, 'uploadFile');
 	return new Promise((resolve, reject) => {
 		let progressIndex = 0;
 		cos.sliceUploadFile({
@@ -33,6 +43,7 @@ function uploadFile(conf, cos) {
 			Key: conf.Key,
 			FilePath: conf.FilePath,
 			onProgress: progressData => {
+				showDebug(conf, 'uploadFile progress', progressData);
 				if (progressIndex > 0 && progressData && progressData.total > SLICE_UPLOAD_FILE_SIZE) {
 					if (conf.log && progressIndex === 1) {
 						console.log($chalk.gray(`Uploading: ${conf.cosUrl}`));
@@ -47,16 +58,19 @@ function uploadFile(conf, cos) {
 		}, (err, data) => {
 			let upErr = new Error('Upload error.');
 			if (err) {
+				showDebug(conf, 'uploadFile err:', err);
 				upErr.detail = err;
 				if (err && err.error && err.error.Message) {
 					upErr.message = err.error.Message;
 				}
 				reject(upErr);
 			} else if (data && data.statusCode === 200) {
+				showDebug(conf, 'uploadFile data:', data);
 				conf.uploadData = data;
 				conf.uploaded = true;
 				resolve(conf);
 			} else {
+				showDebug(conf, 'uploadFile data:', data);
 				upErr.detail = data;
 				reject(upErr);
 			}
@@ -65,6 +79,7 @@ function uploadFile(conf, cos) {
 }
 
 function checkAcl(conf, cos) {
+	showDebug(conf, 'checkAcl');
 	return new Promise((resolve, reject) => {
 		cos.getObjectAcl({
 			Bucket: conf.Bucket,
@@ -73,15 +88,18 @@ function checkAcl(conf, cos) {
 		}, (err, data) => {
 			let aclErr = new Error('Acl Error.');
 			if (err) {
+				showDebug(conf, 'checkAcl err', err);
 				aclErr.detail = err;
 				if (err && err.error && err.error.Message) {
 					aclErr.message = err.error.Message;
 				}
 				reject(aclErr);
 			} else if (data && data.statusCode === 200) {
+				showDebug(conf, 'checkAcl data', data);
 				conf.isExists = true;
 				resolve(conf);
 			} else {
+				showDebug(conf, 'checkAcl data', data);
 				aclErr.detail = data;
 				reject(aclErr);
 			}
@@ -119,6 +137,8 @@ function upload(options) {
 		conf.AppId = conf.Bucket.split('-')[1] || '';
 	}
 
+	showDebug(conf, 'options:', conf);
+
 	let hasAllRequestParam = Object.keys(requestParam).every(key => {
 		if (!conf[key]) {
 			showError(conf, `Missing parameter: ${key}`);
@@ -149,8 +169,11 @@ function upload(options) {
 		cosCache[cacheId] = cos;
 	}
 
+	showDebug(conf, 'before checkAcl');
+
 	let pm = checkAcl(conf, cos)
 		.then(spec => {
+			showDebug(conf, 'checkAcl then:', spec);
 			if (spec.overwrite) {
 				return uploadFile(spec, cos);
 			} else {
@@ -159,6 +182,7 @@ function upload(options) {
 			}
 		})
 		.catch(err => {
+			showDebug(conf, 'checkAcl catch:', err);
 			if (err.detail && err.detail.statusCode === 404) {
 				return uploadFile(conf, cos);
 			} else {
@@ -166,6 +190,7 @@ function upload(options) {
 			}
 		})
 		.then(spec => {
+			showDebug(conf, 'uploadFile then:', spec);
 			let fileUrl = spec.cosUrl;
 			if (spec.cdn && spec.cdnUrl) {
 				fileUrl = spec.cdnUrl;
@@ -193,6 +218,7 @@ function upload(options) {
 			return spec;
 		})
 		.catch(err => {
+			showDebug(conf, 'uploadFile catch:', err);
 			if (err && err.message) {
 				showError(conf, err.message, err);
 			}
