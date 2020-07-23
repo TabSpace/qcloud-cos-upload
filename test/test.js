@@ -1,7 +1,7 @@
 const $fs = require('fs');
 const $path = require('path');
 const $rp = require('request-promise');
-const $chai = require('chai');
+const $assert = require('power-assert');
 const $mocha = require('mocha');
 const $upload = require('../index');
 const $config = require('./config');
@@ -29,24 +29,18 @@ const timestampCosPath = `http://${domain}/${perfix}/test-${timestamp}.js`;
 $fs.writeFileSync(testLocalPath, `console.log(${timestamp});\n`, 'utf8');
 
 describe('config', () => {
-	it('config.AppId should be a string', () => {
-		$chai.expect($config.AppId).to.be.a('string');
-	});
-
-	it('config.SecretId should be a string', () => {
-		$chai.expect($config.SecretId).to.be.a('string');
-	});
-
-	it('config.SecretKey should be a string', () => {
-		$chai.expect($config.SecretKey).to.be.a('string');
-	});
-
-	it('config.Bucket should be a string', () => {
-		$chai.expect($config.Bucket).to.be.a('string');
-	});
-
-	it('config.Region should be a string', () => {
-		$chai.expect($config.Region).to.be.a('string');
+	it('config exists', () => {
+		const proplist = [
+			'AppId',
+			'SecretId',
+			'SecretKey',
+			'Bucket',
+			'Region'
+		];
+		proplist.forEach(name => {
+			$assert(typeof $config[name] === 'string');
+			$assert(!!$config[name]);
+		});
 	});
 });
 
@@ -57,11 +51,12 @@ describe('upload-not-overwrite', function () {
 	let cosRs = null;
 
 	before(done => {
-		$upload(Object.assign({}, $config, {
+		$upload({
+			...$config,
 			cdn: true,
 			FilePath: testLocalPath,
 			Key: testKey
-		}))
+		})
 			.then(rs => {
 				uploadRs = rs;
 			})
@@ -81,32 +76,33 @@ describe('upload-not-overwrite', function () {
 
 	it('NotOverwrite upload state should be succeed', () => {
 		console.log('upload-not-overwrite uploadRs:', uploadRs);
-		$chai.expect(uploadRs).to.be.an('object');
+		$assert(typeof uploadRs === 'object');
+		$assert(!!uploadRs);
 	});
 
 	it('NotOverwrite upload should has return property cosPath', () => {
-		$chai.expect(uploadRs.cosUrl).to.be.a('String');
-		$chai.expect(uploadRs.cosUrl).to.include('coscd.myqcloud.com');
+		$assert(typeof uploadRs.cosUrl === 'string');
+		$assert(uploadRs.cosUrl.indexOf('coscd.myqcloud.com') >= 0);
 	});
 
 	it('NotOverwrite upload should has return property cdnPath', () => {
-		$chai.expect(uploadRs.cdnUrl).to.be.a('String');
-		$chai.expect(uploadRs.cdnUrl).to.include('file.myqcloud.com');
+		$assert(typeof uploadRs.cdnUrl === 'string');
+		$assert(uploadRs.cdnUrl.indexOf('file.myqcloud.com') >= 0);
 	});
 
 	it('NotOverwrite upload should has return property statusMsg', () => {
-		$chai.expect(uploadRs.statusMsg).to.equal('Exists');
+		$assert(uploadRs.statusMsg === 'Exists');
 	});
 
 	it('NotOverwrite upload should has return property url', () => {
-		$chai.expect(uploadRs.url).to.be.a('String');
-		$chai.expect(uploadRs.url).to.include('file.myqcloud.com');
+		$assert(typeof uploadRs.url === 'string');
+		$assert(uploadRs.url.indexOf('file.myqcloud.com') >= 0);
 	});
 
 	it('NotOverwrite target file should not be updated', () => {
 		console.log('upload-not-overwrite cosRs', cosRs);
-		$chai.expect(cosRs).to.be.a('string');
-		$chai.expect(cosRs).to.not.include(timestamp);
+		$assert(typeof cosRs === 'string');
+		$assert(cosRs.indexOf(timestamp) < 0);
 	});
 });
 
@@ -117,12 +113,13 @@ describe('upload-overwrite', function () {
 	let cosRs = null;
 
 	before(done => {
-		$upload(Object.assign({}, $config, {
+		$upload({
+			...$config,
 			cdn: 'test.myqcloud.com',
 			overwrite: true,
 			FilePath: testLocalPath,
 			Key: overwriteKey
-		}))
+		})
 			.then(rs => {
 				uploadRs = rs;
 			})
@@ -142,32 +139,33 @@ describe('upload-overwrite', function () {
 
 	it('Overwrite upload should succeed', () => {
 		console.log('upload-overwrite uploadRs:', uploadRs);
-		$chai.expect(uploadRs).to.be.an('object');
+		$assert(typeof uploadRs === 'object');
+		$assert(!!uploadRs);
 	});
 
 	it('Overwrite upload should has return property cosPath', () => {
-		$chai.expect(uploadRs.cosUrl).to.be.a('String');
-		$chai.expect(uploadRs.cosUrl).to.include('coscd.myqcloud.com');
+		$assert(typeof uploadRs.cosUrl === 'string');
+		$assert(uploadRs.cosUrl.indexOf('coscd.myqcloud.com') >= 0);
 	});
 
 	it('Overwrite upload should has return property cdnPath', () => {
-		$chai.expect(uploadRs.cdnUrl).to.be.a('String');
-		$chai.expect(uploadRs.cdnUrl).to.include('test.myqcloud.com');
+		$assert(typeof uploadRs.cdnUrl === 'string');
+		$assert(uploadRs.cdnUrl.indexOf('test.myqcloud.com') >= 0);
 	});
 
 	it('Overwrite upload should has return property statusMsg', () => {
-		$chai.expect(uploadRs.statusMsg).to.equal('Overwrite');
+		$assert(uploadRs.statusMsg === 'Overwrite');
 	});
 
 	it('Overwrite upload should has return property url', () => {
-		$chai.expect(uploadRs.url).to.be.a('String');
-		$chai.expect(uploadRs.url).to.include('test.myqcloud.com');
+		$assert(typeof uploadRs.url === 'string');
+		$assert(uploadRs.url.indexOf('test.myqcloud.com') >= 0);
 	});
 
 	it('Overwrite file should be updated', () => {
 		console.log('upload-overwrite cosRs', cosRs);
-		$chai.expect(cosRs).to.be.a('string');
-		$chai.expect(cosRs).to.include(timestamp);
+		$assert(typeof cosRs === 'string');
+		$assert(cosRs.indexOf(timestamp) >= 0);
 	});
 });
 
@@ -176,12 +174,13 @@ describe('upload-fail', function () {
 
 	let uploadRs = null;
 	before(done => {
-		$upload(Object.assign({}, $config, {
+		$upload({
+			...$config,
 			debug: true,
 			FilePath: testLocalPath,
 			Key: timestampKey,
 			SecretKey: 'x'
-		}))
+		})
 			.then(rs => {
 				uploadRs = rs;
 				done();
@@ -194,7 +193,7 @@ describe('upload-fail', function () {
 
 	it('upload-fail should be failed', () => {
 		console.log('upload-fail uploadRs', uploadRs);
-		$chai.expect(uploadRs).to.equal(null);
+		$assert(uploadRs === null);
 	});
 });
 
@@ -205,10 +204,11 @@ describe('upload-new', function () {
 	let cosRs = null;
 
 	before(done => {
-		$upload(Object.assign({}, $config, {
+		$upload({
+			...$config,
 			FilePath: testLocalPath,
 			Key: timestampKey
-		}))
+		})
 			.then(rs => {
 				uploadRs = rs;
 			})
@@ -228,31 +228,31 @@ describe('upload-new', function () {
 
 	it('New File upload should succeed', () => {
 		console.log('upload-new uploadRs:', uploadRs);
-		$chai.expect(uploadRs).to.be.an('object');
+		$assert(typeof uploadRs === 'object');
+		$assert(!!uploadRs);
 	});
 
 	it('New File upload should has return property cosPath', () => {
-		$chai.expect(uploadRs.cosUrl).to.be.a('String');
-		$chai.expect(uploadRs.cosUrl).to.include('coscd.myqcloud.com');
+		$assert(typeof uploadRs.cosUrl === 'string');
+		$assert(uploadRs.cosUrl.indexOf('coscd.myqcloud.com') >= 0);
 	});
 
 	it('New File upload should not has return property cdnPath', () => {
-		$chai.expect(uploadRs.cdnUrl).to.equal(undefined);
+		$assert(uploadRs.cdnUrl === undefined);
 	});
 
 	it('New File upload should has return property statusMsg', () => {
-		$chai.expect(uploadRs.statusMsg).to.equal('Success');
+		$assert(uploadRs.statusMsg === 'Success');
 	});
 
 	it('New File upload should has return property url', () => {
-		$chai.expect(uploadRs.url).to.be.a('String');
-		$chai.expect(uploadRs.url).to.include('coscd.myqcloud.com');
+		$assert(typeof uploadRs.url === 'string');
+		$assert(uploadRs.url.indexOf('coscd.myqcloud.com') >= 0);
 	});
 
 	it('New file should be exists', () => {
 		console.log('upload-new cosRs', cosRs);
-		$chai.expect(cosRs).to.be.a('string');
-		$chai.expect(cosRs).to.include(timestamp);
+		$assert(typeof cosRs === 'string');
+		$assert(cosRs.indexOf(timestamp) >= 0);
 	});
 });
-

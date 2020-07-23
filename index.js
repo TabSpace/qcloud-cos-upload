@@ -110,7 +110,7 @@ function checkAcl(conf, cos) {
 function upload(options) {
 	options = options || {};
 
-	let conf = Object.assign({
+	let conf = {
 		// 输出文件路径协议
 		protocol: 'https:',
 		// 静态资源对应 cdn 域名，配置后，打印在控制台的日志自动替换域名显示
@@ -121,8 +121,10 @@ function upload(options) {
 		// 是否在控制台输出日志
 		log: true,
 		// 是否允许覆盖文件
-		overwrite: false
-	}, requestParam, options);
+		overwrite: false,
+		...requestParam,
+		...options
+	};
 
 	conf.domain = `${conf.Bucket}-${conf.AppId}.coscd.myqcloud.com`;
 	conf.cosUrl = $urljoin(`${conf.protocol}//${conf.domain}`, conf.Key);
@@ -231,4 +233,3 @@ function upload(options) {
 }
 
 module.exports = upload;
-
