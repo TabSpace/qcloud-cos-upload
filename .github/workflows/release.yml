@@ -16,13 +16,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
       - name: Install
         run: npm i
       - name: Test
         run: npm test
-      - name: Build
-        run: npm run build
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         env:
